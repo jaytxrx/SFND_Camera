@@ -27,15 +27,23 @@ void showLidarTopview()
 
         int y = (-xw * imageSize.height / worldSize.height) + imageSize.height;
         int x = (-yw * imageSize.width / worldSize.width) + imageSize.width / 2;
-
-
-        cv::circle(topviewImg, cv::Point(x, y), 5, cv::Scalar(0, 0, 255), -1);
         
         // TODO: 
         // 1. Change the color of the Lidar points such that 
         // X=0.0m corresponds to red while X=20.0m is shown as green.
         // 2. Remove all Lidar points on the road surface while preserving 
         // measurements on the obstacles in the scene.
+
+        //note here that the author swapped x and y. xw should go to x and not to y
+        //it could be because the lidar data is from left to right
+        //but the window that we make in opencv is from bottom to top
+
+        if (it->z < -1.4)
+            continue;
+        
+        double green = ((2000-y)*255)/2000;
+        double red = 255-green;
+        cv::circle(topviewImg, cv::Point(x, y), 5, cv::Scalar(0, green, red), -1);
     }
 
     // plot distance markers

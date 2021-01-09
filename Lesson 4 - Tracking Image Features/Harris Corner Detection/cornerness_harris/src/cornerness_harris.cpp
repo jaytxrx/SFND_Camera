@@ -37,10 +37,71 @@ void cornernessHarris()
     // and perform a non-maximum suppression (NMS) in a local neighborhood around 
     // each maximum. The resulting coordinates shall be stored in a list of keypoints 
     // of the type `vector<cv::KeyPoint>`.
+    
+    //https://cppsecrets.com/users/168511510411111711412197115105110104975764103109971051084699111109/C00-OpenCV-cvnormalize.php
+    //https://cppsecrets.com/users/168511510411111711412197115105110104975764103109971051084699111109/C00-OpenCV-cvconvertScaleAbs.php
+    
+    vector<cv::KeyPoint> keypoints;
+    
+    //https://docs.opencv.org/3.4/d4/d7d/tutorial_harris_detector.html
+    for( size_t j = 0; j < dst_norm.rows ; j++ )
+    {
+        for( size_t i = 0; i < dst_norm.cols; i++ )
+        {            
+            //take the keypoint if they are more than a threshold - minResponse
+            int response = (int)dst_norm.at<float>(j, i);
+            if( response > minResponse )
+            {
+                cv::KeyPoint tmpKeyPoint;
+                
+                //https://docs.opencv.org/3.4/d2/d29/classcv_1_1KeyPoint.html
+                tmpKeyPoint.pt = cv::Point2f(i, j);
+                tmpKeyPoint.size = 2 * apertureSize;
+                tmpKeyPoint.response = response;
+                
+                if(keypoints.empty())
+                {
+                    keypoints.push_back(tmpKeyPoint);
+                }
+                else
+                {
+                    // Non-Maximum Suppression (NMS)
+                    for(auto it = keypoints.begin(); it != keypoints.end(); ++it)
+                    {
+                        double overlap = cv::KeyPoint::overlap(tmpKeyPoint, *it);
+                        
+                        if(overlap > 0.0) // 0 means no overlap and 1 means overlap
+                        {
+                            //there is a overlap. so lets check which response is large
+                            if(tmpKeyPoint.response > (*it).response)
+                            {
+                                *it = tmpKeyPoint; //replace
+                                break;
+                            }
+                        }
+                        else //0, there is no overlap
+                        {
+                            keypoints.push_back(tmpKeyPoint);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // visualize keypoints
+    windowName = "Harris Corner Detection Results";
+    cv::namedWindow(windowName, 5);
+    cv::Mat visImage = dst_norm_scaled.clone();
+    cv::drawKeypoints(dst_norm_scaled, keypoints, visImage, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+    cv::imshow(windowName, visImage);
+    cv::waitKey(0);
+    
+    
 
 }
 
 int main()
 {
     cornernessHarris();
-}
+} 

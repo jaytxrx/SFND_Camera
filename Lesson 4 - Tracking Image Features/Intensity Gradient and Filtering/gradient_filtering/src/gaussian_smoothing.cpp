@@ -18,7 +18,24 @@ void gaussianSmoothing1()
                             7, 26, 41, 26, 7,
                             4, 16, 26, 16, 4,
                             1, 4, 7, 4, 1};
+
     cv::Mat kernel = cv::Mat(5, 5, CV_32F, gauss_data);
+    
+    int arr_size = sizeof(gauss_data)/sizeof(gauss_data[0]);
+    std::cout<< "array size is " << arr_size << std::endl;
+    
+    int normalizer = 0;
+    for (int i=0; i<arr_size; i++)
+    {
+        normalizer += gauss_data[i];
+    }
+    
+    std::cout<< "normalizer is " << normalizer << std::endl;
+    
+    for (int i=0; i<arr_size; i++)
+    {
+        gauss_data[i] /= normalizer;
+    }
 
     // apply filter
     cv::Mat result;

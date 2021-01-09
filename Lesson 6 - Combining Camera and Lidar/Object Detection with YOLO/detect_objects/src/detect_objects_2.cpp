@@ -54,7 +54,10 @@ void detectObjects2()
     // invoke forward propagation through network
     vector<cv::Mat> netOutput;
     net.setInput(blob);
+    double t = (double)cv::getTickCount();
     net.forward(netOutput, names);
+    t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+    cout << "Forward Propagation took " << 1000 * t / 1.0 << " ms" << endl;
 
     // Scan through all bounding boxes and keep only the ones with high confidence
     float confThreshold = 0.20;
