@@ -57,6 +57,13 @@ make
 ```
 4. Update back the remote (online) repo so that you can use the updated code in the classroom workspace. 
 
+### Yolo weight error fix
+
+As there will be an error in the cloned yolo weight, Lesson 6 "Object Detection with YOLO" will have run time error. So fetch the weight file using the below command
+```
+cd Lesson 6 - Combining Camera and Lidar/Object Detection with YOLO/detect_objects/dat/yolo/
+wget https://pjreddie.com/media/files/yolov3.weights
+```
 ## D. Pushing Large Files (>100MB) [Optional]
 The file `Combining Camera and Lidar/Object Detection with YOLO/detect_objects/dat/yolo/yolov3.weights` is 236.52 MB; this exceeds GitHub's file size limit of 100.00 MB
 
