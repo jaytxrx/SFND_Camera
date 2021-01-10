@@ -9,8 +9,8 @@
 
 using namespace std;
 
-//comment the below #define for Lesson6, Exercise 10 solution
-//if its commented, view solution for Lesson6, Exercise 11 solution
+//if the below #define is commented, view solution for Lesson6, Exercise 10 solution
+//else, view solution for Lesson6, Exercise 11 solution
 #define TOPVIEW_RECT
 
 void loadCalibrationData(cv::Mat &P_rect_00, cv::Mat &R_rect_00, cv::Mat &RT)
